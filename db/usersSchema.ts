@@ -6,6 +6,6 @@ export const users=pgTable("users",{
     email:text("email").unique(),
     password:text("password"),
     createdAt:timestamp("created-at").defaultNow(),
-    twoFactorAuthSecret:text("2fa-secret"),
-    twoFactorAuthactivated:boolean("2fa-activated").default(false)
+    twoFactorSecret:text("2fa-secret"),
+    twoFactoractivated:boolean("2fa-activated").default(false)
 })

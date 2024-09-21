@@ -38,67 +38,79 @@ export default function Register() {
   });
   const handleSubmit = async (data: z.infer<typeof foromSchema>) => {
     console.log(data.email);
-    const response= await RegisterUser ({
-        email:"",
-        password:data.password,
-        passwordConfirm:data.passwordConfirm
-    })
-    console.log(response)
+    const response = await RegisterUser({
+      email: data.email,
+      password: data.password,
+      passwordConfirm: data.passwordConfirm,
+    });
+    if (response?.error) {
+      form.setError("email", { message: response?.message });
+    }
+    console.log(response);
   };
   return (
     <main className="flex justify-center item-center ">
-      <Card className="w-[350px] ">
-        <CardHeader>
-          <CardTitle>Register</CardTitle>
-          <CardDescription>register for new account</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-4">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input {...field} type={"email"} />
-                    </FormControl>
-                    <FormMessage/>
-                  </FormItem>
-                )}
-              ></FormField>
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>password</FormLabel>
-                    <FormControl>
-                      <Input {...field} type={"password"} />
-                    </FormControl>
-                    <FormMessage/>
-                  </FormItem>
-                )}
-              ></FormField>
-              <FormField
-                control={form.control}
-                name="passwordConfirm"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>passwordConfirm</FormLabel>
-                    <FormControl>
-                      <Input {...field} type={"passwordConfirm"} />
-                    </FormControl>
-                    <FormMessage/>
-                  </FormItem>
-                )}
-              ></FormField>
-              <Button type="submit">Register</Button>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
+      {form.formState.isSubmitSuccessful ? (
+        <div>Your account has been created</div>
+      ) : (
+        <Card className="w-[350px] ">
+          <CardHeader>
+            <CardTitle>Register</CardTitle>
+            <CardDescription>register for new account</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(handleSubmit)}>
+                <fieldset
+                  className="flex flex-col gap-4"
+                  disabled={form.formState.isSubmitting}
+                >
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input {...field} type={"email"} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  ></FormField>
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>password</FormLabel>
+                        <FormControl>
+                          <Input {...field} type={"password"} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  ></FormField>
+                  <FormField
+                    control={form.control}
+                    name="passwordConfirm"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>passwordConfirm</FormLabel>
+                        <FormControl>
+                          <Input {...field} type={"passwordConfirm"} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  ></FormField>
+                  <Button type="submit">Register</Button>
+                </fieldset>
+              </form>
+            </Form>
+          </CardContent>
+        </Card>
+      )}
     </main>
   );
 }
